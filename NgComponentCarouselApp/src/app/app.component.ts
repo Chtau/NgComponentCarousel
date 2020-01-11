@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ICarouselItem, CarouselHtml } from 'projects/ng-component-carousel/src/public-api';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'NgComponentCarouselApp';
+  
+  items: ICarouselItem[] = [
+    new CarouselHtml("<p>Hello</p>"),
+    new CarouselHtml("<p>World</p>"),
+  ];
+
 }

@@ -1,19 +1,92 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { ICarouselItem, CarouselComponent, CarouselHtml } from './carousel.model';
+import { InternalCarouselItem } from './internal-carousel.model';
+import { HostDirective } from './host-container.directive';
+import { IComponentCarouselItem } from './containers/component/component-carousel-item.interface';
+import { IHtmlCarouselItem } from './containers/html/html-carousel-item.interface';
+import { ComponentCarouselItemContainerComponent } from './containers/component/carousel-item-container.component';
+import { HtmlCarouselItemContainerComponent } from './containers/html/html-carousel-item-container.component';
 
 @Component({
-  selector: 'lib-NgComponentCarousel',
-  template: `
-    <p>
-      ng-component-carousel works!
-    </p>
-  `,
-  styles: []
+  selector: 'NgComponentCarousel',
+  templateUrl: './ng-component-carousel.component.html',
+  styleUrls: ['./ng-component-carousel.component.scss'],
 })
 export class NgComponentCarouselComponent implements OnInit {
 
-  constructor() { }
+  itemsCollection: ICarouselItem[] = [];
+  internalItems: InternalCarouselItem[] = [];
+  currentIndex: number = 0;
+  interval: any;
+
+  @ViewChild(HostDirective, { static: true }) host: HostDirective;
+
+  @Input()
+  set items(val: ICarouselItem[]) {
+    this.itemsCollection = val;
+    this.onSetInternalItems();
+  }
+
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
+    this.loadComponent();
+    this.startCarousel();
+  }
+
+  private onSetInternalItems():void {
+    this.internalItems = [];
+    if (this.itemsCollection) {
+      this.itemsCollection.forEach((item: ICarouselItem) => {
+        var itemComponent = item as CarouselComponent;
+        if (itemComponent) {
+          this.internalItems.push(
+          {
+            component: ComponentCarouselItemContainerComponent,
+            model: itemComponent.component
+          });
+        } else {
+          var itemHtml = item as CarouselHtml;
+          if (itemHtml) {
+            this.internalItems.push(
+              {
+                component: HtmlCarouselItemContainerComponent,
+                model: itemHtml.content
+              });
+          }
+        }
+      });
+    }
+  }
+
+  loadComponent() {
+    if (this.internalItems && this.internalItems.length > 0) {
+      if (this.currentIndex > this.internalItems.length - 1) {
+        this.currentIndex = 0;
+      }
+      const item = this.internalItems[this.currentIndex];
+
+      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(item.component);
+  
+      const viewContainerRef = this.host.viewContainerRef;
+      viewContainerRef.clear();
+  
+      const componentRef = viewContainerRef.createComponent(componentFactory);
+      var instanceComponent = (<IComponentCarouselItem>componentRef.instance);
+      if (instanceComponent) {
+        instanceComponent.model = item.model as CarouselComponent;
+      }
+      var instanceHtml = (<IHtmlCarouselItem>componentRef.instance);
+      if (instanceHtml) {
+        instanceHtml.model = item.model as CarouselHtml;
+      }
+    }
+  }
+
+  startCarousel() {
+    this.interval = setInterval(() => {
+      this.loadComponent();
+    }, 3000);
   }
 
 }
