@@ -17,7 +17,8 @@ export class NgComponentCarouselComponent implements OnInit {
   itemsCollection: ICarouselItem[] = [];
   internalItems: InternalCarouselItem[] = [];
   currentIndex: number = 0;
-  interval: any;
+  intervalHandler: any;
+  intervalMS: number = 10000;
 
   @ViewChild(HostDirective, { static: true }) host: HostDirective;
 
@@ -25,6 +26,13 @@ export class NgComponentCarouselComponent implements OnInit {
   set items(val: ICarouselItem[]) {
     this.itemsCollection = val;
     this.onSetInternalItems();
+  }
+
+  @Input()
+  set interval(val: number) {
+    this.intervalMS = val;
+    clearInterval(this.intervalHandler);
+    this.startCarousel();
   }
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
@@ -55,7 +63,7 @@ export class NgComponentCarouselComponent implements OnInit {
     }
   }
 
-  loadComponent() {
+  private loadComponent() {
     if (this.internalItems && this.internalItems.length > 0) {
       if (this.currentIndex > this.internalItems.length - 1) {
         this.currentIndex = 0;
@@ -79,8 +87,8 @@ export class NgComponentCarouselComponent implements OnInit {
     }
   }
 
-  startCarousel() {
-    this.interval = setInterval(() => {
+  private startCarousel() {
+    this.intervalHandler = setInterval(() => {
       this.currentIndex++;
       if (this.internalItems) {
         if (this.currentIndex > this.internalItems.length - 1) {
@@ -90,7 +98,7 @@ export class NgComponentCarouselComponent implements OnInit {
         this.currentIndex = 0;
       }
       this.loadComponent();
-    }, 10000);
+    }, this.intervalMS);
   }
 
 }
