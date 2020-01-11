@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild } from '@angular/core';
-import { ICarouselItem, CarouselComponent, CarouselHtml } from './carousel.model';
+import { ICarouselItem, CarouselComponent, CarouselHtml, ComponentType } from './carousel.model';
 import { InternalCarouselItem } from './internal-carousel.model';
 import { HostDirective } from './host-container.directive';
 import { IComponentCarouselItem } from './containers/component/component-carousel-item.interface';
@@ -38,22 +38,18 @@ export class NgComponentCarouselComponent implements OnInit {
     this.internalItems = [];
     if (this.itemsCollection) {
       this.itemsCollection.forEach((item: ICarouselItem) => {
-        var itemComponent = item as CarouselComponent;
-        if (itemComponent) {
+        if (item.type == ComponentType.Component) {
           this.internalItems.push(
-          {
-            component: ComponentCarouselItemContainerComponent,
-            model: itemComponent.component
-          });
-        } else {
-          var itemHtml = item as CarouselHtml;
-          if (itemHtml) {
-            this.internalItems.push(
-              {
-                component: HtmlCarouselItemContainerComponent,
-                model: itemHtml.content
-              });
-          }
+            {
+              component: ComponentCarouselItemContainerComponent,
+              model: <CarouselComponent>item
+            });
+        } else if (item.type == ComponentType.Html) {
+          this.internalItems.push(
+            {
+              component: HtmlCarouselItemContainerComponent,
+              model: <CarouselHtml>item
+            });
         }
       });
     }
@@ -85,8 +81,16 @@ export class NgComponentCarouselComponent implements OnInit {
 
   startCarousel() {
     this.interval = setInterval(() => {
+      this.currentIndex++;
+      if (this.internalItems) {
+        if (this.currentIndex > this.internalItems.length - 1) {
+          this.currentIndex = 0;
+        }
+      } else {
+        this.currentIndex = 0;
+      }
       this.loadComponent();
-    }, 3000);
+    }, 10000);
   }
 
 }
