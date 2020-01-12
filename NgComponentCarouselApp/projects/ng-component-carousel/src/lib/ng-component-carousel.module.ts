@@ -4,7 +4,7 @@ import { HostDirective } from './host-container.directive';
 import { ComponentCarouselItemContainerComponent } from './containers/component/carousel-item-container.component';
 import { HtmlCarouselItemContainerComponent } from './containers/html/html-carousel-item-container.component';
 import { SafePipe } from './safe.pipe';
-import {MatButtonModule} from '@angular/material/button';
+import { MatIconModule, MatButtonModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -12,14 +12,15 @@ import {MatButtonModule} from '@angular/material/button';
     NgComponentCarouselComponent,
     ComponentCarouselItemContainerComponent,
     HtmlCarouselItemContainerComponent,
-    SafePipe,
-    MatButtonModule
+    SafePipe
   ],
   entryComponents: [
     ComponentCarouselItemContainerComponent,
     HtmlCarouselItemContainerComponent
   ],
   imports: [
+    MatIconModule,
+    MatButtonModule
   ],
   providers: [
     HostDirective,

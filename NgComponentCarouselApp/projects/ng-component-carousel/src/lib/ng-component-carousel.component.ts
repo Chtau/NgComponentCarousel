@@ -101,4 +101,14 @@ export class NgComponentCarouselComponent implements OnInit {
     }, this.intervalMS);
   }
 
+  onPrevious():void {
+    this.currentIndex--;
+    this.loadComponent();
+  }
+
+  onNext():void {
+    this.currentIndex++;
+    this.loadComponent();
+  }
+
 }

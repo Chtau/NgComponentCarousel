@@ -2,4 +2,19 @@
   width: inherit;
   height: inherit;
   overflow: hidden;
+  position: relative;
+}
+
+.previouse-button {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  margin-left: 10px;
+}
+
+.next-button {
+  position: absolute;
+  top: 40%;
+  right: 0;
+  margin-right: 10px;
 }

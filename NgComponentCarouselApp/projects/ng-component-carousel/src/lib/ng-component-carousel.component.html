@@ -1,3 +1,9 @@
 <div class="carousel-item-container">
   <ng-container host-container></ng-container>
+  <button class="previouse-button" mat-mini-fab style="background-color: whitesmoke;color: black;" aria-label="Previous slide" (click)="onPrevious()">
+    <mat-icon>keyboard_arrow_left</mat-icon>
+  </button>
+  <button class="next-button" mat-mini-fab style="background-color: whitesmoke;color: black;" aria-label="Next slide" (click)="onNext()">
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </button>
 </div>
