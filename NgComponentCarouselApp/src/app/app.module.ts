@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { NgComponentCarouselModule } from 'projects/ng-component-carousel/src/public-api';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import { NgComponentCarouselModule } from 'projects/ng-component-carousel/src/pu
   ],
   imports: [
     BrowserModule,
-    NgComponentCarouselModule
+    NgComponentCarouselModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
