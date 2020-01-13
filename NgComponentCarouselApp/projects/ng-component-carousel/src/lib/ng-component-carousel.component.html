@@ -1,4 +1,4 @@
-<div class="carousel-item-container">
+<div class="carousel-item-container" (mouseover)="onMouseOver($event)" (mouseout)="onMouseOut($event)">
   <ng-container host-container></ng-container>
   <button class="previouse-button" mat-mini-fab style="background-color: whitesmoke;color: black;" aria-label="Previous slide" (click)="onPrevious()">
     <mat-icon>keyboard_arrow_left</mat-icon>

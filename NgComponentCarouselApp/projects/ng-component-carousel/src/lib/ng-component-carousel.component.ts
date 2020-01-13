@@ -6,6 +6,7 @@ import { IComponentCarouselItem } from './containers/component/component-carouse
 import { IHtmlCarouselItem } from './containers/html/html-carousel-item.interface';
 import { ComponentCarouselItemContainerComponent } from './containers/component/carousel-item-container.component';
 import { HtmlCarouselItemContainerComponent } from './containers/html/html-carousel-item-container.component';
+import { Observable, Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'NgComponentCarousel',
@@ -17,7 +18,8 @@ export class NgComponentCarouselComponent implements OnInit {
   itemsCollection: ICarouselItem[] = [];
   internalItems: InternalCarouselItem[] = [];
   currentIndex: number = 0;
-  intervalHandler: any;
+  intervalHandler: Subscription;
+  pauseCarousel: boolean = false;
   intervalMS: number = 10000;
 
   @ViewChild(HostDirective, { static: true }) host: HostDirective;
@@ -31,7 +33,7 @@ export class NgComponentCarouselComponent implements OnInit {
   @Input()
   set interval(val: number) {
     this.intervalMS = val;
-    clearInterval(this.intervalHandler);
+    this.pauseCarousel = true;
     this.startCarousel();
   }
 
@@ -87,18 +89,22 @@ export class NgComponentCarouselComponent implements OnInit {
     }
   }
 
-  private startCarousel() {
-    this.intervalHandler = setInterval(() => {
-      this.currentIndex++;
-      if (this.internalItems) {
-        if (this.currentIndex > this.internalItems.length - 1) {
+  private startCarousel() {   
+    var interval = timer(this.intervalMS,this.intervalMS);
+    this.intervalHandler = interval.subscribe(t => {
+      if (this.pauseCarousel === false) {
+        this.currentIndex++;
+        if (this.internalItems) {
+          if (this.currentIndex > this.internalItems.length - 1) {
+            this.currentIndex = 0;
+          }
+        } else {
           this.currentIndex = 0;
         }
-      } else {
-        this.currentIndex = 0;
+        this.loadComponent();
       }
-      this.loadComponent();
-    }, this.intervalMS);
+    });
+    this.pauseCarousel = false;
   }
 
   onPrevious():void {
@@ -111,4 +117,11 @@ export class NgComponentCarouselComponent implements OnInit {
     this.loadComponent();
   }
 
+  onMouseOver(event: MouseEvent): void {
+    this.pauseCarousel = true;
+  }
+
+  onMouseOut(event: MouseEvent):void {
+    this.pauseCarousel = false;
+  }
 }
