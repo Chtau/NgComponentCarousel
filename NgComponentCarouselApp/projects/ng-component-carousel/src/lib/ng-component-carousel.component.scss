@@ -10,6 +10,7 @@
   top: 40%;
   left: 0;
   margin-left: 10px;
+  opacity: 0;
 }
 
 .next-button {
@@ -17,4 +18,14 @@
   top: 40%;
   right: 0;
   margin-right: 10px;
+  opacity: 0;
+}
+
+.carousel-item-container:hover {
+  .next-button {
+    opacity: 1;
+  }
+  .previouse-button {
+    opacity: 1;
+  }
 }
