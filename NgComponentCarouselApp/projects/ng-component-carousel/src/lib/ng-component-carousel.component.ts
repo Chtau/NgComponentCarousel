@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ComponentRef, ComponentFactory, ViewContainerRef } from '@angular/core';
 import { ICarouselItem, CarouselComponent, CarouselHtml, ComponentType } from './carousel.model';
 import { InternalCarouselItem } from './internal-carousel.model';
 import { HostDirective } from './host-container.directive';
@@ -17,6 +17,8 @@ export class NgComponentCarouselComponent implements OnInit {
 
   itemsCollection: ICarouselItem[] = [];
   internalItems: InternalCarouselItem[] = [];
+  components: ComponentFactory<any>[] = [];
+  viewContainerRef: ViewContainerRef = null;
   currentIndex: number = 0;
   intervalHandler: Subscription;
   pauseCarousel: boolean = false;
@@ -27,6 +29,7 @@ export class NgComponentCarouselComponent implements OnInit {
   @Input()
   set items(val: ICarouselItem[]) {
     this.itemsCollection = val;
+    this.components = [];
     this.onSetInternalItems();
   }
 
@@ -71,13 +74,15 @@ export class NgComponentCarouselComponent implements OnInit {
         this.currentIndex = 0;
       }
       const item = this.internalItems[this.currentIndex];
-
-      const componentFactory = this.componentFactoryResolver.resolveComponentFactory(item.component);
-  
-      const viewContainerRef = this.host.viewContainerRef;
-      viewContainerRef.clear();
-  
-      const componentRef = viewContainerRef.createComponent(componentFactory);
+      if (!(this.components.length > this.currentIndex)) {
+        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(item.component);
+        this.components.push(componentFactory);
+      }
+      if (this.viewContainerRef == null) {
+        this.viewContainerRef = this.host.viewContainerRef;
+      }
+      this.viewContainerRef.clear();
+      const componentRef = this.viewContainerRef.createComponent(this.components[this.currentIndex]);
       var instanceComponent = (<IComponentCarouselItem>componentRef.instance);
       if (instanceComponent) {
         instanceComponent.model = item.model as CarouselComponent;
