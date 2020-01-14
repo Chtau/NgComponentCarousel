@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ComponentRef, ComponentFactory, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ComponentRef, ComponentFactory, ViewContainerRef, ViewRef } from '@angular/core';
 import { ICarouselItem, CarouselComponent, CarouselHtml, ComponentType } from './carousel.model';
 import { InternalCarouselItem } from './internal-carousel.model';
 import { HostDirective } from './host-container.directive';
@@ -19,6 +19,7 @@ export class NgComponentCarouselComponent implements OnInit {
   internalItems: InternalCarouselItem[] = [];
   components: ComponentFactory<any>[] = [];
   viewContainerRef: ViewContainerRef = null;
+  viewRefs: ViewRef[] = [];
   currentIndex: number = 0;
   intervalHandler: Subscription;
   pauseCarousel: boolean = false;
@@ -30,6 +31,8 @@ export class NgComponentCarouselComponent implements OnInit {
   set items(val: ICarouselItem[]) {
     this.itemsCollection = val;
     this.components = [];
+    this.viewRefs = [];
+    this.viewContainerRef = null;
     this.onSetInternalItems();
   }
 
@@ -81,16 +84,20 @@ export class NgComponentCarouselComponent implements OnInit {
       if (this.viewContainerRef == null) {
         this.viewContainerRef = this.host.viewContainerRef;
       }
-      this.viewContainerRef.clear();
-      const componentRef = this.viewContainerRef.createComponent(this.components[this.currentIndex]);
-      var instanceComponent = (<IComponentCarouselItem>componentRef.instance);
-      if (instanceComponent) {
-        instanceComponent.model = item.model as CarouselComponent;
+      this.viewContainerRef.detach(0);
+      if (!(this.viewRefs.length > this.currentIndex)) {
+        const componentRef = this.viewContainerRef.createComponent(this.components[this.currentIndex]);
+        var instanceComponent = (<IComponentCarouselItem>componentRef.instance);
+        if (instanceComponent) {
+          instanceComponent.model = item.model as CarouselComponent;
+        }
+        var instanceHtml = (<IHtmlCarouselItem>componentRef.instance);
+        if (instanceHtml) {
+          instanceHtml.model = item.model as CarouselHtml;
+        }
+        this.viewRefs.push(this.viewContainerRef.get(0));
       }
-      var instanceHtml = (<IHtmlCarouselItem>componentRef.instance);
-      if (instanceHtml) {
-        instanceHtml.model = item.model as CarouselHtml;
-      }
+      this.viewContainerRef.insert(this.viewRefs[this.currentIndex]);
     }
   }
 
