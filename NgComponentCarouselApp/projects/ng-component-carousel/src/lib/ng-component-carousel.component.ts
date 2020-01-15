@@ -73,8 +73,11 @@ export class NgComponentCarouselComponent implements OnInit {
 
   private loadComponent() {
     if (this.internalItems && this.internalItems.length > 0) {
-      if (this.currentIndex > this.internalItems.length - 1 || this.currentIndex < 0) {
+      if (this.currentIndex > this.internalItems.length - 1) {
         this.currentIndex = 0;
+      }
+      if (this.currentIndex < 0) {
+        this.currentIndex = this.internalItems.length - 1;
       }
       const item = this.internalItems[this.currentIndex];
       if (!(this.components.length > this.currentIndex)) {
