@@ -24,6 +24,7 @@ export class NgComponentCarouselComponent implements OnInit {
   intervalHandler: Subscription;
   pauseCarousel: boolean = false;
   intervalMS: number = 10000;
+  internalHideButtonsOnHover: boolean = false;
 
   @ViewChild(HostDirective, { static: true }) host: HostDirective;
 
@@ -41,6 +42,11 @@ export class NgComponentCarouselComponent implements OnInit {
     this.intervalMS = val;
     this.pauseCarousel = true;
     this.startCarousel();
+  }
+
+  @Input()
+  set hideButtonsOnHover(val: boolean) {
+    this.internalHideButtonsOnHover = val;
   }
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) { }

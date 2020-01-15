@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';  
 import { NgComponentCarouselComponent } from './ng-component-carousel.component';
 import { HostDirective } from './host-container.directive';
 import { ComponentCarouselItemContainerComponent } from './containers/component/carousel-item-container.component';
@@ -19,6 +20,7 @@ import { MatIconModule, MatButtonModule } from '@angular/material';
     HtmlCarouselItemContainerComponent
   ],
   imports: [
+    CommonModule,
     MatIconModule,
     MatButtonModule
   ],
