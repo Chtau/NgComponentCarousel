@@ -23,6 +23,7 @@ export class NgComponentCarouselComponent implements OnInit {
   currentIndex: number = 0;
   intervalHandler: Subscription;
   pauseCarousel: boolean = false;
+  manualPauseCarousel: boolean = false;
   intervalMS: number = 10000;
   internalHideButtonsOnHover: boolean = false;
 
@@ -47,6 +48,17 @@ export class NgComponentCarouselComponent implements OnInit {
   @Input()
   set hideButtonsOnHover(val: boolean) {
     this.internalHideButtonsOnHover = val;
+  }
+
+  @Input()
+  set newIndex(val: number) {
+    this.currentIndex = val;
+    this.loadComponent();
+  }
+
+  @Input()
+  set pause(val: boolean) {
+    this.manualPauseCarousel = val;
   }
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
@@ -113,16 +125,18 @@ export class NgComponentCarouselComponent implements OnInit {
   private startCarousel() {   
     var interval = timer(this.intervalMS,this.intervalMS);
     this.intervalHandler = interval.subscribe(t => {
-      if (this.pauseCarousel === false) {
-        this.currentIndex++;
-        if (this.internalItems) {
-          if (this.currentIndex > this.internalItems.length - 1) {
+      if (this.manualPauseCarousel === false) {
+        if (this.pauseCarousel === false) {
+          this.currentIndex++;
+          if (this.internalItems) {
+            if (this.currentIndex > this.internalItems.length - 1) {
+              this.currentIndex = 0;
+            }
+          } else {
             this.currentIndex = 0;
           }
-        } else {
-          this.currentIndex = 0;
+          this.loadComponent();
         }
-        this.loadComponent();
       }
     });
     this.pauseCarousel = false;
