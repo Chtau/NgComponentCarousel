@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ICarouselItem, CarouselHtml } from 'projects/ng-component-carousel/src/public-api';
+import { ICarouselItem, CarouselHtml, CarouselComponent } from 'projects/ng-component-carousel/src/public-api';
 
 @Component({
   selector: 'app-root',
