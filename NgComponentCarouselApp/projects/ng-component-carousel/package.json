@@ -1,6 +1,6 @@
 {
   "name": "ng-component-carousel",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "Christoph Taucher",
   "peerDependencies": {
     "@angular/common": "^8.0.3",
