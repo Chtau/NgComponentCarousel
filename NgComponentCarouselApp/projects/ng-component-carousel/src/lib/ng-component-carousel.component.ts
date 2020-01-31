@@ -118,7 +118,14 @@ export class NgComponentCarouselComponent implements OnInit {
         }
         this.viewRefs.push(this.viewContainerRef.get(0));
       }
-      this.viewContainerRef.insert(this.viewRefs[this.currentIndex]);
+      if (this.viewRefs[this.currentIndex].destroyed) {
+        // rebuild
+        this.viewRefs.splice(this.currentIndex, 1);
+        this.components.splice(this.currentIndex, 1);
+        this.loadComponent();
+      } else {
+        this.viewContainerRef.insert(this.viewRefs[this.currentIndex]);
+      }
     }
   }
 
