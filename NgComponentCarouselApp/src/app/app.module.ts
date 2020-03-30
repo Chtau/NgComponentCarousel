@@ -7,7 +7,7 @@ import { NgComponentCarouselModule } from 'projects/ng-component-carousel/src/pu
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home.component';
 import { DummyComponent } from './dummy.component';
-import { MatButtonModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 
 const appRoutes: Routes = [
   { path: 'dummy', component: DummyComponent },
