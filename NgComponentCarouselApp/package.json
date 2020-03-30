@@ -2,6 +2,7 @@
   "name": "ng-component-carousel-app",
   "version": "0.0.0",
   "scripts": {
+    "libbuild": "ng-packagr -p projects/ng-component-carousel/package.json",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

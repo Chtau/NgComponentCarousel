@@ -1,10 +1,17 @@
 {
   "name": "ng-component-carousel",
-  "version": "0.0.3",
+  "version": "9.1.0",
   "author": "Christoph Taucher",
+  "ngPackage": {
+    "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+    "dest": "../../dist/ng-component-carousel",
+    "lib": {
+      "entryFile": "src/public-api.ts"
+    }
+  },
   "peerDependencies": {
-    "@angular/common": "^8.0.3",
-    "@angular/core": "^8.0.3",
-    "@angular/material": "^8.0.1"
+    "@angular/common": "^9.1.0",
+    "@angular/core": "^9.1.0",
+    "@angular/material": "^9.2.0"
   }
 }
