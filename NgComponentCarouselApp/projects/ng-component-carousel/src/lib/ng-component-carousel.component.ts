@@ -105,7 +105,9 @@ export class NgComponentCarouselComponent implements OnInit {
       if (this.viewContainerRef == null) {
         this.viewContainerRef = this.host.viewContainerRef;
       }
-      this.viewContainerRef.detach(0);
+      if (this.viewContainerRef.length > 0) {
+        this.viewContainerRef.detach(0);
+      }
       if (!(this.viewRefs.length > this.currentIndex)) {
         const componentRef = this.viewContainerRef.createComponent(this.components[this.currentIndex]);
         var instanceComponent = (<IComponentCarouselItem>componentRef.instance);
