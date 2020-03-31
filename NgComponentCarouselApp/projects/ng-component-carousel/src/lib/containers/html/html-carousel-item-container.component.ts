@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CarouselHtml } from '../../carousel.model';
 import { IHtmlCarouselItem } from './html-carousel-item.interface';
 
@@ -6,7 +6,6 @@ import { IHtmlCarouselItem } from './html-carousel-item.interface';
   selector: 'HtmlCarouselItemContainerComponent',
   templateUrl: './html-carousel-item-container.component.html',
   styleUrls: ['./html-carousel-item-container.component.scss'],
-  //encapsulation: ViewEncapsulation.
 })
 export class HtmlCarouselItemContainerComponent implements OnInit, IHtmlCarouselItem {
 

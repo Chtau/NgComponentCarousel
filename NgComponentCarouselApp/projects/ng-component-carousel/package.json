@@ -1,6 +1,6 @@
 {
   "name": "ng-component-carousel",
-  "version": "9.1.0",
+  "version": "9.1.1",
   "author": "Christoph Taucher",
   "ngPackage": {
     "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",

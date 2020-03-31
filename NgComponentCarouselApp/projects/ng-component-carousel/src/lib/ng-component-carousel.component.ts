@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ComponentRef, ComponentFactory, ViewContainerRef, ViewRef } from '@angular/core';
+import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ComponentFactory, ViewContainerRef, ViewRef } from '@angular/core';
 import { ICarouselItem, CarouselComponent, CarouselHtml, ComponentType } from './carousel.model';
 import { InternalCarouselItem } from './internal-carousel.model';
 import { HostDirective } from './host-container.directive';
@@ -6,7 +6,7 @@ import { IComponentCarouselItem } from './containers/component/component-carouse
 import { IHtmlCarouselItem } from './containers/html/html-carousel-item.interface';
 import { ComponentCarouselItemContainerComponent } from './containers/component/carousel-item-container.component';
 import { HtmlCarouselItemContainerComponent } from './containers/html/html-carousel-item-container.component';
-import { Observable, Subscription, timer } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 
 @Component({
   selector: 'NgComponentCarousel',
